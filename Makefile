@@ -26,7 +26,7 @@ O3_PROGS = $(addsuffix .O3, $(ALL_PROGS)) $(addsuffix .O3.stripped, $(ALL_PROGS)
 O2_PROGS = $(addsuffix .O2, $(ALL_PROGS)) $(addsuffix .O2.stripped, $(ALL_PROGS))
 OS_PROGS = $(addsuffix .Os, $(ALL_PROGS)) $(addsuffix .Os.stripped, $(ALL_PROGS))
 
-all: $(O3_PROGS) $(O2_PROGS) $(OS_PROGS) | npm
+all: $(O3_PROGS) $(O2_PROGS) $(OS_PROGS)
 
 npm: ; npm install
 

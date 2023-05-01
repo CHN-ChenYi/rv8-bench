@@ -40,6 +40,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 typedef unsigned char u8;
 typedef unsigned int u32;
@@ -1094,6 +1095,11 @@ void aes_encrypt_deinit(void *ctx)
 
 int main()
 {
+	struct timeval	starttime;
+	struct timeval	endtime;
+	long benchtime;
+	gettimeofday(&starttime, NULL);
+
 	static const u8 key[16] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
 	static const size_t DATA_SIZE = 32 * 1024 * 1024;
 	
@@ -1127,5 +1133,10 @@ int main()
 	free(pt1);
 	free(ct);
 	free(pt2);
+
+	gettimeofday(&endtime, NULL);
+	benchtime = (endtime.tv_sec * 1000000 + endtime.tv_usec) -
+		(starttime.tv_sec * 1000000 + starttime.tv_usec);
+	printf("results: (%ld)\n", benchtime);
 	return 0;
 }

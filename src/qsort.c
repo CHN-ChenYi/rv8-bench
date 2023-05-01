@@ -29,6 +29,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 typedef int		 cmp_t(const void *, const void *);
 
@@ -184,6 +185,11 @@ int compare (const void *a, const void *b)
 
 int main()
 {
+	struct timeval	starttime;
+	struct timeval	endtime;
+	long benchtime;
+	gettimeofday(&starttime, NULL);
+
 	int *arr = malloc(ARRAY_SIZE * sizeof(int));
 	int val = 1;
 	for (size_t i = 0; i < ARRAY_SIZE; i++) {
@@ -192,5 +198,10 @@ int main()
 	}
 	qsort(arr, ARRAY_SIZE, sizeof(int), compare);
 	printf("%u\n", arr[ARRAY_SIZE-1]);
+
+	gettimeofday(&endtime, NULL);
+	benchtime = (endtime.tv_sec * 1000000 + endtime.tv_usec) -
+		(starttime.tv_sec * 1000000 + starttime.tv_usec);
+	printf("results: (%ld)\n", benchtime);
 	return 0;
 }

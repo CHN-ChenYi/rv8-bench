@@ -35,6 +35,7 @@
 #include <iostream>
 #include <algorithm>
 #include <initializer_list>
+#include <sys/time.h>
 
 
 #if defined (__GNUC__)
@@ -926,8 +927,19 @@ void Nat::from_string(const char *str, size_t len, size_t radix)
 
 int main(int argc, char const *argv[])
 {
+	struct timeval	starttime;
+	struct timeval	endtime;
+	long benchtime;
+	gettimeofday(&starttime, NULL);
+
 	int val = 23, power = 111121;
 	Nat result = Nat(val).pow(power);
 	printf("%d ^ %d has %d digits\n", val, power, result.to_string().size());
 	assert(result.limb_at(0) == 2367549335);
+
+	gettimeofday(&endtime, NULL);
+	benchtime = (endtime.tv_sec * 1000000 + endtime.tv_usec) -
+		(starttime.tv_sec * 1000000 + starttime.tv_usec);
+	printf("results: (%ld)\n", benchtime);
+	return 0;
 }

@@ -14,6 +14,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stdio.h>
+#include <sys/time.h>
 
 #define bswap64 __builtin_bswap64
 
@@ -182,6 +183,11 @@ void sha512_final(struct sha512_ctx_t *ctx, uint8_t result[64])
 
 int main()
 {
+    struct timeval	starttime;
+    struct timeval	endtime;
+    long benchtime;
+    gettimeofday(&starttime, NULL);
+
     struct sha512_ctx_t sha512;
     uint8_t buf[SHA512_OUTPUT_BYTES];
     uint8_t output[SHA512_OUTPUT_BYTES];
@@ -197,4 +203,9 @@ int main()
         printf("%hhx", output[j]);
     }
     printf("\n");
+
+    gettimeofday(&endtime, NULL);
+    benchtime = (endtime.tv_sec * 1000000 + endtime.tv_usec) -
+        (starttime.tv_sec * 1000000 + starttime.tv_usec);
+    printf("results: (%ld)\n", benchtime);
 }

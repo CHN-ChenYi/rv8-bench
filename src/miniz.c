@@ -141,6 +141,8 @@
    functions (such as tdefl_compress_mem_to_heap() and tinfl_decompress_mem_to_heap()) won't work. */
 /*#define MINIZ_NO_MALLOC */
 
+#include <sys/time.h>
+
 #define MINIZ_NO_TIME
 
 #if defined(__TINYC__) && (defined(__linux) || defined(__linux__))
@@ -8444,6 +8446,11 @@ static const size_t DATA_SIZE = 8 * 1024 * 1024;
 
 int main()
 {
+      struct timeval      starttime;
+      struct timeval      endtime;
+      long benchtime;
+      gettimeofday(&starttime, NULL);
+
     uInt step = 0;
     int cmp_status;
     uLong src_len = DATA_SIZE;
@@ -8529,5 +8536,10 @@ int main()
     step++;
 
     printf("Success.\n");
+
+      gettimeofday(&endtime, NULL);
+      benchtime = (endtime.tv_sec * 1000000 + endtime.tv_usec) -
+            (starttime.tv_sec * 1000000 + starttime.tv_usec);
+      printf("results: (%ld)\n", benchtime);
     return EXIT_SUCCESS;
 }

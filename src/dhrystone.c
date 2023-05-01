@@ -521,6 +521,7 @@ void Proc0()
 		Version, (unsigned long) LOOPS, benchtime,
 		/* overflow free division by VAX DMIPS value (1757) */
 		(LOOPS * 71) / (benchtime >> 3));
+	printf("results: (%ld)\n", benchtime);
 }
 
 void Proc1(RecordPtr PtrParIn)

@@ -19,6 +19,7 @@
 #include <string.h>
 #include <strings.h>
 #include <assert.h>
+#include <sys/time.h>
 
 typedef struct
 {
@@ -469,6 +470,11 @@ int cf_norx32_decrypt(const uint8_t key[static 16],
 
 int main()
 {
+  struct timeval  starttime;
+  struct timeval  endtime;
+  long benchtime;
+  gettimeofday(&starttime, NULL);
+
   static const uint8_t key[16] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
   static const uint8_t nonce[8] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7 };
   static const size_t DATA_SIZE = 32 * 1024 * 1024;
@@ -498,5 +504,10 @@ int main()
   free(pt1);
   free(ct);
   free(pt2);
+
+  gettimeofday(&endtime, NULL);
+  benchtime = (endtime.tv_sec * 1000000 + endtime.tv_usec) -
+    (starttime.tv_sec * 1000000 + starttime.tv_usec);
+  printf("results: (%ld)\n", benchtime);
   return 0;
 }
